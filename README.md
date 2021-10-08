@@ -11,7 +11,7 @@
 1. [Software Quality e Tools](#software-quality-and-tools)
 1. [JMeter](#jmeter)
 1. [Zed Attack Proxy](#zed-attack-proxy)
-1  [Build ed esecuzione progetto](#build-ed-esecuzione-progetto)
+1. [Build ed esecuzione progetto](#build-ed-esecuzione-progetto)
 
 ## Unit Testing
 (_01/10/2021_)
