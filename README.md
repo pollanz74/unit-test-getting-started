@@ -139,7 +139,7 @@ TODO
 Per poter fare build ed esecuzione del codice è necessario utilizzare JDK >= 11 e maven 3.
 
 ### Struttura progetto
-Progetto maven multi modulo. Le versioni degli artifact sono presenti nel "root" _pom.xml_.
+Progetto maven multi modulo. Le versioni degli artifact sono presenti nel "root" `pom.xml`.
 
 ### Build ed esecuzione test
 
