@@ -4,13 +4,10 @@
 1. [JUnit](#junit)
 1. [Hello JUnit](#hello-junit)
 1. [Hello Mock](#hello-mock)
-1. [JUnit e Database](#junit-e-database)
 1. [JUnit e Spring](#junit-e-spring)
 1. [TestContainers](#testcontainers)
 1. [Test Coverage e Reportistica](#test-coverage-e-reportistica)
-1. [Software Quality e Tools](#software-quality-and-tools)
-1. [JMeter](#jmeter)
-1. [Zed Attack Proxy](#zed-attack-proxy)
+1. [Software Quality Security e Tools](#software-quality-security-and-tools)
 1. [Build ed esecuzione progetto](#build-ed-esecuzione-progetto)
 
 ## Unit Testing
@@ -101,9 +98,6 @@ mvn -Dtest=CalculatorTests#sumShouldGetCorrectValue test
 - Jfixture
   + [https://github.com/FlexTradeUKLtd/jfixture](https://github.com/FlexTradeUKLtd/jfixture)
 
-## JUnit e Database
-TODO
-
 ## JUnit e Spring
 > "The Spring team advocates test-driven development (TDD)"
 > "Testing is an integral part of enterprise software development"
@@ -114,26 +108,24 @@ TODO
   + Mocking dei bean
   + [https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#features.testing](https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#features.testing)
   + [https://github.com/spring-projects/spring-petclinic/](https://github.com/spring-projects/spring-petclinic/)
-- DB Unit
+- Interazione con database
+  + DB Unit
 - Rest Assured
 
 ## TestContainers
-TODO
+- Libreria Java a supporto degli unit test, consente di avviare qualsiasi elemento che può essere "containerizzato" come ad esempio un database
+  + https://www.testcontainers.org/
 
 ## Test Coverage e Reportistica
 - Reportistica
   + [https://maven.apache.org/surefire/maven-surefire-report-plugin/index.html](https://maven.apache.org/surefire/maven-surefire-report-plugin/index.html) `mvn surefire-report:report`
 - JaCoCo
 
-## Software Quality e Tools
+## Software Quality Security e Tools
 - Plugin per analisi statica del codice
 - Plugin per l'ide (_SonarLint_)
-
-## JMeter
-TODO
-
-## Zed Attack Proxy
-TODO
+- JMeter
+- Zed Attack Proxy
 
 ## Build ed esecuzione progetto
 Per poter fare build ed esecuzione del codice è necessario utilizzare JDK >= 11 e maven 3.
