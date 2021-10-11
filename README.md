@@ -1,5 +1,6 @@
 # Unit Test - Getting Started
 
+1. [Build ed esecuzione codice](#build-ed-esecuzione-codice)
 1. [Unit Testing](#unit-testing)
 1. [JUnit](#junit)
 1. [Hello JUnit](#hello-junit)
@@ -8,7 +9,16 @@
 1. [TestContainers](#testcontainers)
 1. [Test Coverage e Reportistica](#test-coverage-e-reportistica)
 1. [Software Quality Security e Tools](#software-quality-security-and-tools)
-1. [Build ed esecuzione progetto](#build-ed-esecuzione-progetto)
+
+## Build ed esecuzione codice
+Per poter fare build ed esecuzione del codice è necessario utilizzare JDK 11.
+Struttura progetto: maven multi modulo. Le versioni delle librerie utilizzate sono configurate nel "root" _pom.xml_.
+
+```shell
+git clone https://github.com/pollanz74/unit-test-getting-started.git
+cd unit-test-getting-started
+./mvnw clean test
+```
 
 ## Unit Testing
 (_01/10/2021_)
@@ -126,15 +136,3 @@ mvn -Dtest=CalculatorTests#sumShouldGetCorrectValue test
 - Plugin per l'ide (_SonarLint_)
 - JMeter
 - Zed Attack Proxy
-
-## Build ed esecuzione progetto
-Per poter fare build ed esecuzione del codice è necessario utilizzare JDK >= 11 e maven 3.
-
-### Struttura progetto
-Progetto maven multi modulo. Le versioni degli artifact sono presenti nel "root" _pom.xml_.
-
-### Build ed esecuzione test
-
-```shell
-mvn clean test
-```
