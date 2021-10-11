@@ -8,7 +8,7 @@
 1. [JUnit e Spring](#junit-e-spring)
 1. [TestContainers](#testcontainers)
 1. [Test Coverage e Reportistica](#test-coverage-e-reportistica)
-1. [Software Quality Security e Tools](#software-quality-security-and-tools)
+1. [Software Quality Security e Tools](#software-quality-security-e-tools)
 
 ## Build ed esecuzione codice
 Per poter fare build ed esecuzione del codice è necessario utilizzare JDK 11.
@@ -119,8 +119,9 @@ mvn -Dtest=CalculatorTests#sumShouldGetCorrectValue test
   + [https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#features.testing](https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#features.testing)
   + [https://github.com/spring-projects/spring-petclinic/](https://github.com/spring-projects/spring-petclinic/)
 - Interazione con database
-  + DB Unit
+  + DB Unit: [https://www.dbunit.org/](https://www.dbunit.org/)
 - Rest Assured
+  + [https://rest-assured.io/](https://rest-assured.io/)
 
 ## TestContainers
 - Libreria Java a supporto degli unit test, consente di avviare qualsiasi elemento che può essere "containerizzato" come ad esempio un database
@@ -130,9 +131,16 @@ mvn -Dtest=CalculatorTests#sumShouldGetCorrectValue test
 - Reportistica
   + [https://maven.apache.org/surefire/maven-surefire-report-plugin/index.html](https://maven.apache.org/surefire/maven-surefire-report-plugin/index.html) `mvn surefire-report:report`
 - JaCoCo
+  + [https://www.jacoco.org/jacoco/](https://www.jacoco.org/jacoco/)
 
 ## Software Quality Security e Tools
 - Plugin per analisi statica del codice
-- Plugin per l'ide (_SonarLint_)
+  + PMD: [https://pmd.github.io/](https://pmd.github.io/)
+  + SpotBugs: [https://spotbugs.github.io/](https://spotbugs.github.io/)
+  + Checkstyle: [https://checkstyle.sourceforge.io/](https://checkstyle.sourceforge.io/)
+- Plugin per l'ide
+  + SonalLint: [https://www.sonarlint.org/](https://www.sonarlint.org/)
 - JMeter
+  + [https://jmeter.apache.org/](https://jmeter.apache.org/)
 - Zed Attack Proxy
+  + [https://www.zaproxy.org/](https://www.zaproxy.org/)
