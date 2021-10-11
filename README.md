@@ -52,7 +52,7 @@ mvn -Dtest=CalculatorTests test
 ```
 - Esecuzione di un test specifico (un solo metodo):
 ```shell
-hello-junit
+cd hello-junit
 mvn -Dtest=CalculatorTests#sumShouldGetCorrectValue test
 ```
 - ArgumentAccessor\ArgumentAggregator
