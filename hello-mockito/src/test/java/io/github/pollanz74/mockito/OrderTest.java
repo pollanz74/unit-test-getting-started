@@ -6,10 +6,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 
 import static com.flextrade.jfixture.FixtureAnnotations.initFixtures;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -44,11 +41,11 @@ class OrderTest {
     //CASO 1: uso di mock senza annotation + uso di org.assertj.core.api.Assertions (assertj)
     @Test
     @DisplayName("order successful, first case")
-    void orderShouldbeCompletedSuccesssfully() {
+    void orderShouldbeCompletedSuccessfully() {
 
         Payment paymentMock = Mockito.mock(Payment.class);
         Delivery deliveryMock = Mockito.mock(Delivery.class);
-        Order order1 = new Order(123, deliveryMock, paymentMock); // necessario, problema di InjectMocks
+        Order order1 = new Order(123, deliveryMock, paymentMock);
         when(deliveryMock.canDelivery(any())).thenReturn(true);
         when(paymentMock.isPaymentAccepted()).thenReturn(true);
         when(paymentMock.generateReceipt()).thenReturn(receipt);
@@ -62,7 +59,7 @@ class OrderTest {
     //CASO 2: uso di mock con annotation + uso di org.junit.jupiter.api.Assertions (jupiter)
     @Test
     @DisplayName("order successful, second case")
-    void orderShouldbeCompletedSuccesssfully2() {
+    void orderShouldbeCompletedSuccessfully2() {
 
         when(delivery.canDelivery(any())).thenReturn(true);
         when(payment.isPaymentAccepted()).thenReturn(true);
@@ -77,7 +74,7 @@ class OrderTest {
     // uso di spy
     @Test
     @DisplayName("order successful, spy")
-    void orderShouldbeCompletedSuccesssfully4() {
+    void orderShouldbeCompletedSuccessfully3() {
 
         Payment paymentSpy = spy(new Payment());
         Delivery deliverySpy = Mockito.spy(new Delivery());
@@ -123,5 +120,27 @@ class OrderTest {
 
     }
 
+    @Test
+    @DisplayName("order successful, first case")
+    void orderShouldbeCompletedSuccessfully4() {
 
+        Payment paymentMock = Mockito.mock(Payment.class);
+        Delivery deliveryMock = Mockito.mock(Delivery.class);
+        Order order1 = new Order(123, deliveryMock, paymentMock);
+        ArgumentCaptor<Order> argumentCaptor = ArgumentCaptor.forClass(Order.class);
+
+        when(deliveryMock.canDelivery(any())).thenReturn(true);
+        when(paymentMock.isPaymentAccepted()).thenReturn(true);
+        when(paymentMock.generateReceipt()).thenReturn(receipt);
+
+        //ASSERTJ
+        org.assertj.core.api.Assertions.assertThat(order1.doOrder()).isEqualTo(receipt);
+
+        verify(deliveryMock).canDelivery(argumentCaptor.capture());
+
+        Assertions.assertEquals(123, argumentCaptor.getValue().getOrderNumber());
+
+        verify(paymentMock, times(1)).printReceipt();
+
+    }
 }
