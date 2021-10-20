@@ -40,7 +40,7 @@ class OrderTest {
 
     //CASO 1: uso di mock senza annotation + uso di org.assertj.core.api.Assertions (assertj)
     @Test
-    @DisplayName("order successful, first case")
+    @DisplayName("Order successful, utilizzo di mock senza annotazioni")
     void orderShouldbeCompletedSuccessfully() {
 
         Payment paymentMock = Mockito.mock(Payment.class);
@@ -58,7 +58,7 @@ class OrderTest {
 
     //CASO 2: uso di mock con annotation + uso di org.junit.jupiter.api.Assertions (jupiter)
     @Test
-    @DisplayName("order successful, second case")
+    @DisplayName("order successful, utilizzo di mock con annotazioni")
     void orderShouldbeCompletedSuccessfully2() {
 
         when(delivery.canDelivery(any())).thenReturn(true);
@@ -73,7 +73,7 @@ class OrderTest {
 
     // uso di spy
     @Test
-    @DisplayName("order successful, spy")
+    @DisplayName("order successful, semplice uso di spy")
     void orderShouldbeCompletedSuccessfully3() {
 
         Payment paymentSpy = spy(new Payment());
@@ -121,7 +121,7 @@ class OrderTest {
     }
 
     @Test
-    @DisplayName("order successful, first case")
+    @DisplayName("order successful, utilizzo di argument captor")
     void orderShouldbeCompletedSuccessfully4() {
 
         Payment paymentMock = Mockito.mock(Payment.class);
