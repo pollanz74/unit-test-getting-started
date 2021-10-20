@@ -74,19 +74,23 @@ class OrderTest {
 
     }
 
-    //CASO 3: uso di mock misto
+    // uso di spy
     @Test
-    @DisplayName("order successful, second case")
-    void orderShouldbeCompletedSuccesssfully3() {
+    @DisplayName("order successful, spy")
+    void orderShouldbeCompletedSuccesssfully4() {
 
-        Payment paymentMock = Mockito.mock(Payment.class);
-        Order order1 = new Order(123, delivery, paymentMock);
-        when(delivery.canDelivery(any())).thenReturn(true);
-        when(paymentMock.isPaymentAccepted()).thenReturn(true);
-        when(paymentMock.generateReceipt()).thenReturn(receipt);
+        Payment paymentSpy = spy(new Payment());
+        Delivery deliverySpy = Mockito.spy(new Delivery());
+        paymentSpy.setCardNumber("12");
+        Order order1 = new Order(123, deliverySpy, paymentSpy);
+        Mockito.doReturn(true).when(deliverySpy).canDelivery(any());
+        Mockito.doReturn(true).when(paymentSpy).isPaymentAccepted();
+        Mockito.doReturn(receipt).when(paymentSpy).generateReceipt();
 
-        Assertions.assertEquals(receipt, order1.doOrder());
-        verify(paymentMock, times(1)).printReceipt();
+        Assertions.assertEquals("12", paymentSpy.getCardNumber());
+
+        org.assertj.core.api.Assertions.assertThat(order1.doOrder()).isEqualTo(receipt);
+        verify(paymentSpy, times(1)).printReceipt();
 
     }
 
