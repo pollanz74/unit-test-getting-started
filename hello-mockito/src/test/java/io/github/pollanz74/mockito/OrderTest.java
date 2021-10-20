@@ -41,21 +41,53 @@ class OrderTest {
     @InjectMocks
     Order order;
 
-    //CASO 1
+    //CASO 1: uso di mock senza annotation + uso di org.assertj.core.api.Assertions (assertj)
     @Test
-    @DisplayName("order successful")
+    @DisplayName("order successful, first case")
     void orderShouldbeCompletedSuccesssfully() {
 
         Payment paymentMock = Mockito.mock(Payment.class);
-        Order order1 = new Order(123,delivery,paymentMock);
+        Delivery deliveryMock = Mockito.mock(Delivery.class);
+        Order order1 = new Order(123, deliveryMock, paymentMock); // necessario, problema di InjectMocks
+        when(deliveryMock.canDelivery(any())).thenReturn(true);
+        when(paymentMock.isPaymentAccepted()).thenReturn(true);
+        when(paymentMock.generateReceipt()).thenReturn(receipt);
+
+        //ASSERTJ
+        org.assertj.core.api.Assertions.assertThat(order1.doOrder()).isEqualTo(receipt);
+        verify(paymentMock, times(1)).printReceipt();
+
+    }
+
+    //CASO 2: uso di mock con annotation + uso di org.junit.jupiter.api.Assertions (jupiter)
+    @Test
+    @DisplayName("order successful, second case")
+    void orderShouldbeCompletedSuccesssfully2() {
+
+        when(delivery.canDelivery(any())).thenReturn(true);
+        when(payment.isPaymentAccepted()).thenReturn(true);
+        when(payment.generateReceipt()).thenReturn(receipt);
+
+        //JUPITER
+        Assertions.assertEquals(receipt, order.doOrder());
+        verify(payment, times(1)).printReceipt();
+
+    }
+
+    //CASO 3: uso di mock misto
+    @Test
+    @DisplayName("order successful, second case")
+    void orderShouldbeCompletedSuccesssfully3() {
+
+        Payment paymentMock = Mockito.mock(Payment.class);
+        Order order1 = new Order(123, delivery, paymentMock);
         when(delivery.canDelivery(any())).thenReturn(true);
         when(paymentMock.isPaymentAccepted()).thenReturn(true);
         when(paymentMock.generateReceipt()).thenReturn(receipt);
 
-        org.assertj.core.api.Assertions.assertThat(order1.doOrder()).isEqualTo(receipt);
-        //JUPITER
         Assertions.assertEquals(receipt, order1.doOrder());
-        verify(paymentMock,times(2)).printReceipt();
+        verify(paymentMock, times(1)).printReceipt();
+
     }
 
     @Test
@@ -68,8 +100,8 @@ class OrderTest {
         assertThat(exception).isNotNull();
         assertThat(exception.getMessage()).isEqualTo("Sorry, at the moment your order can't be delivered");
 
-        verify(payment,times(0)).printReceipt();
-        verify(payment,times(0)).isPaymentAccepted();
+        verify(payment, times(0)).printReceipt();
+        verify(payment, times(0)).isPaymentAccepted();
 
     }
 
@@ -83,7 +115,8 @@ class OrderTest {
         assertThat(exception).isNotNull();
         assertThat(exception.getMessage()).isEqualTo("Sorry your payment is not successful, try again");
 
-        verify(delivery,times(1)).canDelivery(any());
+        verify(delivery, times(1)).canDelivery(any());
+
     }
 
 
