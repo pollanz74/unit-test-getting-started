@@ -1,9 +1,18 @@
 package io.github.pollanz74.mockito;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.util.logging.Logger;
 
 import static io.github.pollanz74.mockito.constant.Constants.COMPANY_NAME;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Payment {
 
     private static Logger logger = Logger.getLogger(Payment.class.getName());
@@ -22,8 +31,8 @@ public class Payment {
         return receipt;
     }
 
-    void printReceipt() {
-        System.out.println("thank you client, this is your receipt: "+ this.receipt);
+    public void printReceipt() {
+        System.out.println("thank you client, this is your receipt: " + this.receipt);
     }
 
     public Double getVatValue(Payment payment) {
@@ -46,48 +55,6 @@ public class Payment {
         double vatValue = payment.getTotal() * 100 / 100 + vatPerc;
         logger.info("vat value is: " + vatValue);
         return payment.getTotal() * 100 / 100 + vatPerc;
-    }
-
-    public Payment() {
-    }
-
-    public Payment(String cardNumber, String currency, Double total, boolean paymentAccepted) {
-        this.cardNumber = cardNumber;
-        this.currency = currency;
-        this.total = total;
-        this.paymentAccepted = paymentAccepted;
-    }
-
-    public String getCardNumber() {
-        return cardNumber;
-    }
-
-    public void setCardNumber(String cardNumber) {
-        this.cardNumber = cardNumber;
-    }
-
-    public String getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(String currency) {
-        this.currency = currency;
-    }
-
-    public Double getTotal() {
-        return total;
-    }
-
-    public void setTotal(Double total) {
-        this.total = total;
-    }
-
-    public boolean isPaymentAccepted() {
-        return paymentAccepted;
-    }
-
-    public void setPaymentAccepted(boolean paymentAccepted) {
-        this.paymentAccepted = paymentAccepted;
     }
 
 }
