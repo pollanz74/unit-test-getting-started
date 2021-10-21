@@ -1,14 +1,10 @@
 package io.github.pollanz74.mockito;
 
 import com.flextrade.jfixture.JFixture;
-import com.flextrade.jfixture.annotations.Fixture;
-import org.assertj.core.error.ShouldBeOdd;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.text.ParseException;
@@ -17,7 +13,6 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Date;
 
-import static com.flextrade.jfixture.FixtureAnnotations.initFixtures;
 import static io.github.pollanz74.mockito.constant.Constants.COMPANY_NAME;
 
 @ExtendWith(MockitoExtension.class)
@@ -48,18 +43,18 @@ class PaymentTest {
 
     @DisplayName("can pay is true, card is valid")
     @RepeatedTest(100)
-    void canPayReturnTrue(){
-        OffsetDateTime dataScadenza  = date.toInstant().atOffset(ZoneOffset.ofHours(2));
-        System.out.println("data di scadenza: "+dataScadenza);
+    void canPayReturnTrue() {
+        OffsetDateTime dataScadenza = date.toInstant().atOffset(ZoneOffset.ofHours(2));
+        System.out.println("data di scadenza: " + dataScadenza);
         payment.setValidUntil(dataScadenza);
         Assertions.assertTrue(payment.canPay());
     }
 
     @DisplayName("can pay is false, card is expired")
     @RepeatedTest(100)
-    void canPayReturnFalse(){
-        OffsetDateTime dataScadenza  = date.toInstant().atOffset(ZoneOffset.ofHours(2));
-        System.out.println("data di scadenza: "+dataScadenza);
+    void canPayReturnFalse() {
+        OffsetDateTime dataScadenza = date.toInstant().atOffset(ZoneOffset.ofHours(2));
+        System.out.println("data di scadenza: " + dataScadenza);
         payment.setValidUntil(dataScadenza);
         Assertions.assertFalse(payment.canPay());
     }
@@ -67,10 +62,26 @@ class PaymentTest {
     @Test
     @DisplayName("generate correct receipt")
     void generateReceiptOK() {
-       /* receipt.setCompanyName(COMPANY_NAME);
-        receipt.setTotal(this.getTotal());
-        receipt.setVat(getVatValue(this));
-        receipt.setNetImport(receipt.getTotal() - receipt.getVat());*/
+        //pagamento in bitcoin
+        payment = new Payment(1, OffsetDateTime.now(), "B", 100.0, new Receipt());
+        Assertions.assertEquals(COMPANY_NAME, payment.generateReceipt().getCompanyName());
+        Assertions.assertEquals(0.0, payment.generateReceipt().getVat());
+        Assertions.assertEquals(100.0, payment.generateReceipt().getTotal());
+        Assertions.assertEquals(100.0, payment.generateReceipt().getNetImport());
+
+        payment = new Payment(1, OffsetDateTime.now(), "$", 100.0, new Receipt());
+        Assertions.assertEquals(COMPANY_NAME, payment.generateReceipt().getCompanyName());
+        Assertions.assertEquals(100.0 - 10000.0 / 110.0, payment.generateReceipt().getVat());
+        Assertions.assertEquals(100.0, payment.generateReceipt().getTotal());
+        Assertions.assertEquals(100.0 - (100.0 - 10000.0 / 110.0), payment.generateReceipt().getNetImport());
+
+        payment = new Payment(1, OffsetDateTime.now(), "€", 100.0, new Receipt());
+        Assertions.assertEquals(COMPANY_NAME, payment.generateReceipt().getCompanyName());
+        Assertions.assertEquals(100.0 - 10000.0 / 122.0, payment.generateReceipt().getVat());
+        Assertions.assertEquals(100.0, payment.generateReceipt().getTotal());
+        Assertions.assertEquals(100.0 - (100.0 - 10000.0 / 122.0), payment.generateReceipt().getNetImport());
+
+
     }
 
     @Test

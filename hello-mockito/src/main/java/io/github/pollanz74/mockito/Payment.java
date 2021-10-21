@@ -55,7 +55,7 @@ public class Payment {
                 vatPerc = 22.0;
         }
         //scorporo dell'iva
-        return payment.getTotal() * 100 / (100 + vatPerc);
+        return (payment.getTotal() - payment.getTotal() * 100 / (100 + vatPerc));
     }
 
 }
