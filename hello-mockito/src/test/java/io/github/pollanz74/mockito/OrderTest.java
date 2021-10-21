@@ -2,16 +2,13 @@ package io.github.pollanz74.mockito;
 
 import com.flextrade.jfixture.annotations.Fixture;
 import com.github.javafaker.Faker;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.mockito.*;
 
 import static com.flextrade.jfixture.FixtureAnnotations.initFixtures;
-import static io.github.pollanz74.mockito.constant.Constants.*;
+import static io.github.pollanz74.mockito.constant.Constants.ADDRESS;
+import static io.github.pollanz74.mockito.constant.Constants.SYSTEM;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 //@RunWith(MockitoJUnitRunner.class)
@@ -22,6 +19,7 @@ class OrderTest {
     void init() {
         MockitoAnnotations.openMocks(this);
         initFixtures(this);
+        order.setOrderNumber(10);
     }
 
     //uso dell'annotation mock
@@ -128,12 +126,15 @@ class OrderTest {
     }
 
     @Test
-    @DisplayName("Order successful, utilizzo di reset mock")
+    @DisplayName("Order successful, utilizzo di reset mock e faker")
     void orderShouldbeCompletedSuccessfully5() {
 
         Payment paymentMock = Mockito.mock(Payment.class);
         Delivery deliveryMock = Mockito.mock(Delivery.class);
-        Order order1 = new Order(123, deliveryMock, paymentMock);
+
+        int orderNumber = faker.number().numberBetween(1,10);
+
+        Order order1 = new Order(orderNumber, deliveryMock, paymentMock);
         when(deliveryMock.canDelivery(anyString(),anyString(),anyInt())).thenReturn(deliveryMock);
         when(deliveryMock.isDeliveryAccepted()).thenReturn(true);
         when(paymentMock.isPaymentAccepted()).thenReturn(true);
@@ -145,7 +146,7 @@ class OrderTest {
 
         reset(paymentMock);
 
-        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, () -> order1.doOrder());
+        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, order1::doOrder);
         assertThat(exception).isNotNull();
         assertThat(exception.getMessage()).isEqualTo("Sorry your payment is not successful, try again");
 
@@ -153,54 +154,35 @@ class OrderTest {
 
     @Test
     @DisplayName("order successful, utilizzo di argument captor")
+    @RepeatedTest(3)
     void orderShouldbeCompletedSuccessfully4() {
 
         Payment paymentMock = Mockito.mock(Payment.class);
         Delivery deliveryMock = Mockito.spy(new Delivery());
         Order order1 = new Order(123, deliveryMock, paymentMock);
-        ArgumentCaptor<Order> argumentCaptor = ArgumentCaptor.forClass(Order.class);
+        ArgumentCaptor<String> argument1Captor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> argument2Captor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<Integer> argument3Captor = ArgumentCaptor.forClass(Integer.class);
 
-
-        deliveryMock.setDeliveryAccepted(true);
-        deliveryMock.setAddress(ADDRESS);
-
-        doReturn(true).when(deliveryMock).canDelivery(anyString(),anyString(),anyInt());
-        //when(deliveryMock.canDelivery(any())).thenReturn(true);
+        doReturn(deliveryMock).when(deliveryMock).canDelivery(anyString(),anyString(),anyInt());
+        doReturn(true).when(deliveryMock).isDeliveryAccepted();
         when(paymentMock.isPaymentAccepted()).thenReturn(true);
         when(paymentMock.generateReceipt()).thenReturn(receipt);
 
 
         org.assertj.core.api.Assertions.assertThat(order1.doOrder()).isEqualTo(receipt);
 
-        verify(deliveryMock).canDelivery(argumentCaptor.capture());
+        verify(deliveryMock).canDelivery(argument1Captor.capture(),argument2Captor.capture(), argument3Captor.capture());
 
-        Order captured = argumentCaptor.getValue();
+        String addressCaptured = argument1Captor.getValue();
+        String customerNameCaptured = argument2Captor.getValue();
+        Integer trackNumberCaptured = argument3Captor.getValue();
 
-        Assertions.assertEquals(123, argumentCaptor.getValue().getOrderNumber());
+        Assertions.assertEquals(ADDRESS, addressCaptured);
+        Assertions.assertEquals(SYSTEM, customerNameCaptured);
+        Assertions.assertEquals(123, trackNumberCaptured);
 
         verify(paymentMock, times(1)).printReceipt();
 
-        //Assertions.assertTrue(captured.getDelivery().getTrackNumber().contains(TRACKER_PREFIX));
-        Assertions.assertEquals(captured.getDelivery().getAddress(),ADDRESS);
-        //Assertions.assertEquals(captured.getDelivery().getCustomerName(),SYSTEM);
     }
-/*
-    @Test
-    @DisplayName("Order successful, utilizzo di Faker")
-    void orderShouldbeCompletedSuccessfully6() {
-
-        int orderNumber = faker.number().numberBetween(1,10);
-        Payment paymentMock = Mockito.mock(Payment.class);
-        Delivery deliveryMock = Mockito.mock(Delivery.class);
-        Order order1 = new Order(orderNumber, deliveryMock, paymentMock);
-        when(deliveryMock.canDelivery(any())).thenReturn(true);
-        when(paymentMock.isPaymentAccepted()).thenReturn(true);
-        when(paymentMock.generateReceipt()).thenReturn(receipt);
-
-        org.assertj.core.api.Assertions.assertThat(order1.doOrder()).isEqualTo(receipt);
-        verify(paymentMock, times(1)).printReceipt();
-
-    }
-
- */
 }

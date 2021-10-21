@@ -20,7 +20,7 @@ public class Order {
 
     public Receipt doOrder() {
         Receipt receipt;
-        if (delivery.canDelivery(ADDRESS,SYSTEM,10).isDeliveryAccepted()) {
+        if (delivery.canDelivery(ADDRESS,SYSTEM,this.getOrderNumber()).isDeliveryAccepted()) {
             if (payment.isPaymentAccepted()) {
                 receipt = payment.generateReceipt();
                 payment.printReceipt();
