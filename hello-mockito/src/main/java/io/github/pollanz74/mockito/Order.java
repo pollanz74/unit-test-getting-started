@@ -21,7 +21,7 @@ public class Order {
     public Receipt doOrder() {
         Receipt receipt;
         if (delivery.canDelivery(ADDRESS,SYSTEM,this.getOrderNumber()).isDeliveryAccepted()) {
-            if (payment.isPaymentAccepted()) {
+            if (payment.canPay()) {
                 receipt = payment.generateReceipt();
                 payment.printReceipt();
             } else {

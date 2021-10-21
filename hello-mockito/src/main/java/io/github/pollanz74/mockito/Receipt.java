@@ -16,4 +16,14 @@ public class Receipt {
     private Double vat;
     private Double total;
 
+    @Override
+    public String toString() {
+        return "\n" +
+                "\t\t" + "[\n" +
+                "\t\t\t" + "companyName: " + companyName + '\n' +
+                "\t\t\t" + "netImport: " + netImport + '\n' +
+                "\t\t\t" + "vat: " + vat + '\n' +
+                "\t\t\t" + "total: " + total + '\n' +
+                "\t\t" + "]\n";
+    }
 }

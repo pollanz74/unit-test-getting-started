@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.logging.Logger;
+import java.time.OffsetDateTime;
 
 import static io.github.pollanz74.mockito.constant.Constants.COMPANY_NAME;
 
@@ -15,13 +15,16 @@ import static io.github.pollanz74.mockito.constant.Constants.COMPANY_NAME;
 @NoArgsConstructor
 public class Payment {
 
-    private static Logger logger = Logger.getLogger(Payment.class.getName());
-    private String cardNumber;
+    private Integer cardNumber;
+    private OffsetDateTime validUntil;
     private String currency;
     private Double total;
-    private boolean paymentAccepted;
     private Receipt receipt;
 
+
+    public boolean canPay() {
+        return OffsetDateTime.now().isBefore(validUntil);
+    }
 
     public Receipt generateReceipt() {
         receipt.setCompanyName(COMPANY_NAME);
@@ -52,9 +55,7 @@ public class Payment {
                 vatPerc = 22.0;
         }
         //scorporo dell'iva
-        double vatValue = payment.getTotal() * 100 / 100 + vatPerc;
-        logger.info("vat value is: " + vatValue);
-        return payment.getTotal() * 100 / 100 + vatPerc;
+        return payment.getTotal() * 100 / (100 + vatPerc);
     }
 
 }
