@@ -32,7 +32,7 @@ class PaymentTest {
         JFixture fixture = new JFixture();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-        /*  Date min = dateFormat.parse("2029-10-01");
+        /*Date min = dateFormat.parse("2029-10-01");
         Date max = dateFormat.parse("2030-10-31");*/
 
         Date min = dateFormat.parse("2019-10-01");

@@ -40,7 +40,6 @@ class OrderTest {
     @FromListOf(numbers = { 40, 2020, 123, 550, 220, Integer.MAX_VALUE})
     private Integer cardNumber;
 
-    //TODO info su differenze mockito 2.x e 3.x su specifico metodo deprecato
     @BeforeEach
     void init() {
         MockitoAnnotations.openMocks(this);
@@ -192,6 +191,8 @@ class OrderTest {
         Delivery deliveryMock = Mockito.mock(Delivery.class);
 
         int orderNumber = faker.number().numberBetween(1,10000);
+        String username = faker.name().username();
+        String ip = faker.internet().ipV4Address();
 
         Order order1 = new Order(orderNumber, deliveryMock, paymentMock);
         when(deliveryMock.canDelivery(anyString(),anyString(),anyInt())).thenReturn(deliveryMock);
