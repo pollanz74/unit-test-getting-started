@@ -1,5 +1,7 @@
 package io.github.pollanz74.mockito;
 
+import io.github.pollanz74.mockito.exception.DeliveryFailedException;
+import io.github.pollanz74.mockito.exception.PaymentFailedExcepiton;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,10 +27,10 @@ public class Order {
                 receipt = payment.generateReceipt();
                 payment.printReceipt();
             } else {
-                throw new RuntimeException("Sorry your payment is not successful, try again");
+                throw new PaymentFailedExcepiton("Sorry your payment is not successful, try again");
             }
         } else {
-            throw new RuntimeException("Sorry, at the moment your order can't be delivered");
+            throw new DeliveryFailedException("Sorry, at the moment your order can't be delivered");
         }
         return receipt;
     }

@@ -41,6 +41,7 @@ class PaymentTest {
         date = fixture.create().inRange(Date.class, min.getTime(), max.getTime());
     }
 
+    @Disabled
     @DisplayName("can pay is true, card is valid")
     @RepeatedTest(100)
     void canPayReturnTrue() {

@@ -4,6 +4,8 @@ import com.flextrade.jfixture.annotations.Fixture;
 import com.flextrade.jfixture.annotations.FromListOf;
 import com.flextrade.jfixture.annotations.Range;
 import com.github.javafaker.Faker;
+import io.github.pollanz74.mockito.exception.DeliveryFailedException;
+import io.github.pollanz74.mockito.exception.PaymentFailedExcepiton;
 import org.junit.jupiter.api.*;
 import org.mockito.*;
 
@@ -91,12 +93,12 @@ class OrderTest {
         when(delivery.canDelivery(anyString(),anyString(),anyInt())).thenReturn(delivery);
         when(delivery.isDeliveryAccepted()).thenReturn(false);
 
-        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, () -> order.doOrder());
+        DeliveryFailedException exception = Assertions.assertThrows(DeliveryFailedException.class, () -> order.doOrder());
         assertThat(exception).isNotNull();
         assertThat(exception.getMessage()).isEqualTo("Sorry, at the moment your order can't be delivered");
 
         verify(payment, times(0)).canPay();
-        verify(payment, times(0)).printReceipt();
+        verify(payment, never()).printReceipt();
 
     }
 
@@ -108,26 +110,23 @@ class OrderTest {
 
         when(payment.canPay()).thenReturn(false);
 
-        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, () -> order.doOrder());
+        PaymentFailedExcepiton exception = Assertions.assertThrows(PaymentFailedExcepiton.class, () -> order.doOrder());
         assertThat(exception).isNotNull();
         assertThat(exception.getMessage()).isEqualTo("Sorry your payment is not successful, try again");
 
         verify(delivery, times(1)).canDelivery(anyString(),anyString(),anyInt());
         verify(delivery, times(1)).isDeliveryAccepted();
-        verify(payment, times(0)).generateReceipt();
-        verify(payment, times(0)).printReceipt();
+        verify(payment, never()).generateReceipt();
+        verify(payment, never()).printReceipt();
     }
 
     @RepeatedTest(3)
-    @DisplayName("order successful, Mockito.spy e JFixture")
+    @DisplayName("order successful, Mockito.spy")
     void orderShouldbeCompletedSuccessfullyWithSpyAndFixtureFeatures() {
 
         Payment paymentSpy = spy(new Payment());
         //chiamata a metodo reale, receipt creata con JFIXTURE
         paymentSpy.setReceipt(receipt);
-
-      /*  JFixture fixture = new JFixture();
-        String prettyCompanyName = fixture.create(String.class);*/
 
         Delivery deliverySpy = spy(new Delivery());
         //chiamata a metodo reale, cardNumber creato con JFIXTURE
@@ -206,7 +205,7 @@ class OrderTest {
 
         reset(paymentMock);
 
-        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, order1::doOrder);
+        PaymentFailedExcepiton exception = Assertions.assertThrows(PaymentFailedExcepiton.class, order1::doOrder);
         assertThat(exception).isNotNull();
         assertThat(exception.getMessage()).isEqualTo("Sorry your payment is not successful, try again");
 
