@@ -24,6 +24,39 @@ class CalculatorTests {
     }
 
     @Test
+    void sumShouldGetNotCorrectValue() {
+        org.junit.jupiter.api.Assertions.assertNotEquals(-5, Calculator.sum(2, 3));
+    }
+
+    @Test
+    void subShouldGetCorrectValue() {
+        org.junit.jupiter.api.Assertions.assertEquals(-5, Calculator.sub(8, 13));
+    }
+
+    @Test
+    void subShouldGetNotCorrectValue() {
+        org.junit.jupiter.api.Assertions.assertNotEquals(5, Calculator.sub(8, 13));
+    }
+
+    @Test
+    void percentageShouldGetCorrectValue() {
+        org.junit.jupiter.api.Assertions.assertEquals(10, Calculator.percentage(1, 10));
+    }
+
+    @ParameterizedTest
+    @CsvSource({"1/2,2/4", "2/3,4/6", "3/2,9/6","6,12/2","1,3/3","11/31,11/31"})
+
+    void reduceFractionShouldGetCorrectValue(String expected, String args) {
+        org.junit.jupiter.api.Assertions.assertEquals(expected, Calculator.reduceFraction(args));
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {1, 47, 128, 4, 42})
+    void convertToBinaryShouldGetCorrectValue(int a) {
+        org.junit.jupiter.api.Assertions.assertEquals(Integer.toBinaryString(a), Calculator.convertToBinary(a));
+    }
+
+    @Test
     @Disabled // NB: da non usare se non temporaneamente!!
     void sumShouldGetCorrectValueWithIntegerMaxValue() {
         org.junit.jupiter.api.Assertions.assertEquals(2147483648L, Calculator.sum(Integer.MAX_VALUE, 1));
