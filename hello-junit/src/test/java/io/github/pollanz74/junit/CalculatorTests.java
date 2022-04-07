@@ -56,6 +56,12 @@ class CalculatorTests {
         org.junit.jupiter.api.Assertions.assertEquals(Integer.toBinaryString(a), Calculator.convertToBinary(a));
     }
 
+    @ParameterizedTest
+    @CsvSource({"2,2", "6,3", "24,4","120,5","1,0"})
+    void factorialShouldGetCorrectValue(String expected, String args) {
+        org.junit.jupiter.api.Assertions.assertEquals(Integer.parseInt(expected), Calculator.factorial(Integer.parseInt(args)));
+    }
+
     @Test
     @Disabled // NB: da non usare se non temporaneamente!!
     void sumShouldGetCorrectValueWithIntegerMaxValue() {

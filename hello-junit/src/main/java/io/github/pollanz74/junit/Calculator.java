@@ -87,4 +87,15 @@ public final class Calculator {
         return result;
     }
 
+    public static int factorial(int a){
+
+        int result = a;
+        if (result <= 0){result = 1;}
+        while(a>1){
+            a= a-1;
+            result = result * a;
+        }
+        return result;
+    }
+
 }
