@@ -57,7 +57,7 @@ class CalculatorTests {
     }
 
     @ParameterizedTest
-    @CsvSource({"2,2", "6,3", "24,4","120,5","1,0"})
+    @CsvSource({"2,2", "6,3", "24,4","720,6","1,0"})
     void factorialShouldGetCorrectValue(String expected, String args) {
         org.junit.jupiter.api.Assertions.assertEquals(Integer.parseInt(expected), Calculator.factorial(Integer.parseInt(args)));
     }

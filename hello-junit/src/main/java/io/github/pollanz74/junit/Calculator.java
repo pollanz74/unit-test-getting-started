@@ -75,6 +75,7 @@ public final class Calculator {
         //pari o dispari
         while (a!=0) {
             if (a % 2 == 1) {
+
                 result = "1" + result;
                 a = (a - 1) / 2;
             }
